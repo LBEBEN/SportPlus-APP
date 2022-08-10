@@ -13,6 +13,8 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.LocaleContextResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import pl.lukasbeben.bucklet.BuckletConverter;
+import pl.lukasbeben.trainer.TrainerConverter;
 
 
 import javax.persistence.EntityManagerFactory;
@@ -56,6 +58,20 @@ public class AppConfig implements WebMvcConfigurer {
         return new LocalValidatorFactoryBean();
     }
 
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(getTrainerConverter());
+        registry.addConverter(getBuckletConverter());
+    }
 
+    @Bean
+    public TrainerConverter getTrainerConverter(){
+        return new TrainerConverter();
+    }
+
+    @Bean
+    public BuckletConverter getBuckletConverter(){
+        return new BuckletConverter();
+    }
 
 }

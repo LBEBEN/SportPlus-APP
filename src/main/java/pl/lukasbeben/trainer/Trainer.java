@@ -29,4 +29,9 @@ public class Trainer {
 
     private String descryption; // będzie wybierany z listy rozwijanej
 
+    //metoda pozwalając wyświetlać imię i nazwisko trenera w widoku
+    public String getDisplayName(){
+        return name + " " + surname;
+    }
+
 }

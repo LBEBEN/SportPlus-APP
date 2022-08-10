@@ -14,42 +14,63 @@
 <body bgcolor="#6495ed">
 <h2>Wszyscy klienci</h2>
 </p>
-<table border="1" bgcolor = #b0c4de>
+<div><input type="button" onclick="location.href='/customer/add';" value="NOWY KLIENT" /></div>
+<div style="display: flex">
+    <div id = "table">
+    <table border="1" bgcolor = #b0c4de>
     <tr>
         <th>L.p.</th>
         <th>Imię</th>
         <th>Nazwisko</th>
-        <th>Numer karnetu</th>
-        <th>Opłacono depozyt</th>
-        <th>Adres email</th>
-        <th>Nr telefonu</th>
-        <th>Data zakupu</th>
-        <th>Ostatnia wizyta</th>
-        <th>Trener</th>
         <th>Rodzaj karnetu</th>
+        <th>Data zakupu</th>
+        <th>Data ważności</th>
+        <th>Pozostało wejść</th>
+        <th>Ostatnia wizyta</th>
         <th>Uwagi</th>
-        <th>
-            <input type="button" onclick="location.href='/trainer/all';" value="TRENERZY" />
-            <input type="button" onclick="location.href='/bucklet/all';" value="KARNETY" />
-        </th>
     </tr>
     <c:forEach items="${customers}" var="customer" begin="0" end="${size-1}" varStatus="row">
-        <tr align="center">
+        <c:choose>
+        <c:when test="${empty customer.visitsLeft}">
+        <tr align="center" bgcolor="red">
             <td>${row.index + 1}</td>
             <td align="left">${customer.name}</td>
             <td align="left">${customer.surname}</td>
-            <td>${customer.cartNumber}</td>
-            <td>${customer.cartDeposit}</td>
-            <td>${customer.email}</td>
-            <td>${customer.phoneNumber}</td>
-            <td>${customer.purchaseDate}</td>
-            <td>${customer.lastVisit}</td>
-            <td>${customer.trainer.surname}</td>
             <td>${customer.bucklet.name}</td>
+            <td>${customer.purchaseDate}</td>
+            <td>${customer.expiryDate}</td>
+            <td>${customer.visitsLeft}</td>
+            <td>${customer.lastVisit}</td>
             <td>${customer.comment}</td>
+            <td>
+                <input type="button" onclick="location.href='/customer/details/${customer.clientId}';" value="SZCZEGÓŁY"/>
+                <input type="button" onclick="location.href='/customer/delete/${customer.clientId}';" value="USUŃ"/>
+            </td>
         </tr>
+        </c:when>
+        <c:otherwise>
+            <tr align="center">
+                <td>${row.index + 1}</td>
+                <td align="left">${customer.name}</td>
+                <td align="left">${customer.surname}</td>
+                <td>${customer.bucklet.name}</td>
+                <td>${customer.purchaseDate}</td>
+                <td>${customer.expiryDate}</td>
+                <td>${customer.visitsLeft}</td>
+                <td>${customer.lastVisit}</td>
+                <td>${customer.comment}</td>
+                <td>
+                    <input type="button" onclick="location.href='/customer/details/${customer.clientId}';" value="SZCZEGÓŁY"/>
+                    <input type="button" onclick="location.href='/customer/delete/${customer.clientId}';" value="USUŃ"/>
+                </td>
+            </tr>
+        </c:otherwise>
+        </c:choose>
     </c:forEach>
-
-</table>
+    </table>
+    </div>
+    <div style="margin: 0 10px"><input type="button" onclick="location.href='/trainer/all';" value="TRENERZY" /></div>
+    <div><input type="button" onclick="location.href='/bucklet/all';" value="KARNETY" /></div>
+</div>
 </body>
 </html>
