@@ -82,10 +82,48 @@ public class CustomerController {
     }
 
     @PostMapping("/edit/{clientId}")
-    public String editClient(Customer customer){
+    public String editClient(Customer customer) {
+        List<Bucklet> bucklets = buckletService.showAll();
+        for (Bucklet b : bucklets) {
+            if (b.getBuckletId() == customer.getBucklet().getBuckletId()) {
+                customer.setVisitsLeft(b.getNumberOfVisits());
+                customer.setExpiryDate(customer.getPurchaseDate().plusDays(customer.getBucklet().getValidity()));
+            }}
+            customerService.editCustomer(customer);
+            return "redirect:/customer/all";
+    }
+
+//     odnawianie karnetu
+    @GetMapping ("/renew/{clientId}")
+    public String renewBucklet(@PathVariable int clientId, Model model){
+        Customer customer = customerService.findById(clientId);
+        List<Bucklet> bucklets = buckletService.showAll();
+        model.addAttribute("name", customer.getName());
+        model.addAttribute("surname", customer.getSurname());
+        model.addAttribute("bucklets", bucklets);
+        model.addAttribute("clientId", clientId);
+        return "customers/renew";
+    }
+
+    @PostMapping("/renew/{clientId}")
+    public String renewBucklet(@PathVariable int clientId, int buckletType, String date){
+        if(date.isEmpty()){
+            return "customers/renew";
+        }
+        Customer customer = customerService.findById(clientId);
+        List<Bucklet> bucklet = buckletService.showAll();
+        customer.setPurchaseDate(LocalDate.parse(date));
+        for (Bucklet b: bucklet){
+            if(b.getBuckletId() == buckletType){
+                customer.setBucklet(b);
+                customer.setVisitsLeft(b.getNumberOfVisits());
+                customer.setExpiryDate(LocalDate.parse(date).plusDays(customer.getBucklet().getValidity()));
+            }
+        }
         customerService.editCustomer(customer);
         return "redirect:/customer/all";
     }
+
     @GetMapping("/delete/{clientId}")
     public String deleteCustomer(@PathVariable int clientId){
         Customer customer = customerService.findById(clientId);

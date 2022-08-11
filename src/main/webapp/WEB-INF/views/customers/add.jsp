@@ -31,9 +31,10 @@
         <div style="margin: 0 30px">Typ karnetu</br><form:select path="bucklet" id="karnet">
             <form:option value="0" label="--- wybierz ---"/>
             <form:options items="${bucklets}" itemLabel="name" itemValue="buckletId"/>
-            </form:select>
+            </form:select><br>
+            <form:errors path="bucklet" cssClass="ui-state-error-text" cssStyle="color: red"/>
         </div>
-        <div style="margin: 0 15px">Od kiedy</br><form:input path="purchaseDate"/></br><form:errors path="purchaseDate" cssStyle="color: #f30909"/></div>
+        <div style="margin: 0 15px">Od kiedy</br><form:input path="purchaseDate" placeholder ="dd-MM-yyyy"/></br><form:errors path="purchaseDate" cssStyle="color: #f30909"/></div>
     </div>
     </p>
     Wpłacono depozyt

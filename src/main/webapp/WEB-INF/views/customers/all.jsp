@@ -18,7 +18,7 @@
 <div style="display: flex">
     <div id = "table">
     <table border="1" bgcolor = #b0c4de>
-    <tr>
+    <tr style="background-color: darkblue; color: white">
         <th>L.p.</th>
         <th>Imię</th>
         <th>Nazwisko</th>
@@ -28,6 +28,13 @@
         <th>Pozostało wejść</th>
         <th>Ostatnia wizyta</th>
         <th>Uwagi</th>
+        <th>
+            <div style="display: flex">
+                <div style="margin: 0 10px"><input type="button" onclick="location.href='/trainer/all';" value="TRENERZY" /></div>
+                <div><input type="button" onclick="location.href='/bucklet/all';" value="KARNETY" /></div>
+            </div>
+
+        </th>
     </tr>
     <c:forEach items="${customers}" var="customer" begin="0" end="${size-1}" varStatus="row">
         <c:choose>
@@ -44,6 +51,7 @@
             <td>${customer.comment}</td>
             <td>
                 <input type="button" onclick="location.href='/customer/details/${customer.clientId}';" value="SZCZEGÓŁY"/>
+                <input type="button" onclick="location.href='/customer/renew/${customer.clientId}';" value="ODNÓW"/>
                 <input type="button" onclick="location.href='/customer/delete/${customer.clientId}';" value="USUŃ"/>
             </td>
         </tr>
@@ -61,6 +69,7 @@
                 <td>${customer.comment}</td>
                 <td>
                     <input type="button" onclick="location.href='/customer/details/${customer.clientId}';" value="SZCZEGÓŁY"/>
+                    <input type="button" onclick="location.href='/customer/renew/${customer.clientId}';" value="ODNÓW"/>
                     <input type="button" onclick="location.href='/customer/delete/${customer.clientId}';" value="USUŃ"/>
                 </td>
             </tr>
@@ -69,8 +78,6 @@
     </c:forEach>
     </table>
     </div>
-    <div style="margin: 0 10px"><input type="button" onclick="location.href='/trainer/all';" value="TRENERZY" /></div>
-    <div><input type="button" onclick="location.href='/bucklet/all';" value="KARNETY" /></div>
 </div>
 </body>
 </html>

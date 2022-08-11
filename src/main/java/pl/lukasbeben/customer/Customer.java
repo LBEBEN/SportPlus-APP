@@ -67,6 +67,7 @@ public class Customer {
 
     @ManyToOne
     @JoinColumn(name = "b_id")
+    @NotNull (message = "Ustaw rodzaj karnetu")
     private Bucklet bucklet;
 
 }
