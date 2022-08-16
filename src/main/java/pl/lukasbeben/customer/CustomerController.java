@@ -13,6 +13,7 @@ import pl.lukasbeben.trainer.Trainer;
 import pl.lukasbeben.trainer.TrainerService;
 
 import javax.validation.Valid;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -43,14 +44,12 @@ public class CustomerController {
 
     @ModelAttribute("trainers")
     public List<Trainer> setTrainer(){
-        List<Trainer> trainers = trainerService.findAll();
-        return trainers;
+        return trainerService.findAll();
     }
 
     @ModelAttribute("bucklets")
     public List<Bucklet> setBucklet(){
-        List<Bucklet> bucklets = buckletService.showAll();
-        return  bucklets;
+        return buckletService.showAll();
     }
 
     @GetMapping("/add")
@@ -122,6 +121,23 @@ public class CustomerController {
         }
         customerService.editCustomer(customer);
         return "redirect:/customer/all";
+    }
+
+    @GetMapping("/presence")
+    public String notePresence(){
+        return "customers/presence";
+    }
+
+    @PostMapping("/presence")
+    public String notePresence(@RequestParam String cartNumber, Model model ) {
+        try {
+            customerService.notePresence(cartNumber);
+            model.addAttribute("info", "Odnotowano wejście");
+        } catch (NullPointerException e){
+
+            model.addAttribute("info", "Nie ma takiego numru w bazie");
+        }
+        return "redirect: /customer/presence";
     }
 
     @GetMapping("/delete/{clientId}")

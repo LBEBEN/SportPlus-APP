@@ -19,6 +19,7 @@
 <input type="button" onclick="location.href='/customer/all';" value="LISTA KLIENTÓW"/>
 </div>
 </p>
+<%--<script> prompt('pokaz')</script>--%>
 <table border="1" bgcolor = #b0c4de>
     <tr>
         <th>L.p.</th>

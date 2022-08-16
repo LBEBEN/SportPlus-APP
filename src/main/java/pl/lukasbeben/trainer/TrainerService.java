@@ -29,7 +29,7 @@ public class TrainerService {
     }
 
     public void deleteTrainer(Trainer trainer){
-        trainerDao.delete(trainer);
+            trainerDao.delete(trainer);
     }
 
 }

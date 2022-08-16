@@ -17,7 +17,9 @@
 <h2>Dodaj nowego klienta</h2>
 <form:form method="post" modelAttribute="customer">
     <div style="display:flex">
-        <div style="alignment: left">Imię</br> <form:input path="name"/></br> <form:errors path="name" cssStyle="color: #f30909"/></div>
+        <div style="alignment: left">Imię</br> <form:input path="name"/></br>
+            <form:errors path="name" cssStyle="color: #f30909" />
+        </div>
         <div style="margin: 0 30px"> Nazwisko</br><form:input path="surname"/></br><form:errors path="surname" cssStyle="color: #f30909" /></div>
     </div>
     </p>
@@ -34,7 +36,7 @@
             </form:select><br>
             <form:errors path="bucklet" cssClass="ui-state-error-text" cssStyle="color: red"/>
         </div>
-        <div style="margin: 0 15px">Od kiedy</br><form:input path="purchaseDate" placeholder ="dd-MM-yyyy"/></br><form:errors path="purchaseDate" cssStyle="color: #f30909"/></div>
+        <div style="margin: 0 15px">Od kiedy</br><form:input path="purchaseDate" placeholder = "dd-MM-yyyy"/></br><form:errors path="purchaseDate" cssStyle="color: #f30909"/></div>
     </div>
     </p>
     Wpłacono depozyt

@@ -58,7 +58,11 @@ public class BuckletController {
     @GetMapping("delete/{buckletId}")
     public String deleteBucklet(@PathVariable int buckletId){
         Bucklet bucklet = buckletService.findById(buckletId);
-        buckletService.deleteBucklet(bucklet);
+        try {
+            buckletService.deleteBucklet(bucklet);
+        }catch (Exception e){
+            return "bucklets/warning";
+        }
         return "redirect:/bucklet/all";
     }
 

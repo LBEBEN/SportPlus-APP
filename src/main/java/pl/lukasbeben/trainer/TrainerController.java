@@ -5,20 +5,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.WebUtils;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping("/trainer")
 @RequiredArgsConstructor
+@SessionAttributes ({"info"})
 public class TrainerController {
 
     private final TrainerService trainerService;
 
     @RequestMapping ("/all")
-    public String showAllTrainers(Model model){
+    public String showAllTrainers(Model model, HttpServletResponse response){
         int size = trainerService.findAll().size();
         model.addAttribute("trainers", trainerService.findAll());
         model.addAttribute("size", size);
@@ -64,7 +71,11 @@ public class TrainerController {
     @GetMapping("/delete/{trainerId}")
     public String deleteTrainer(@PathVariable int trainerId) {
         Trainer trainer = trainerService.findById(trainerId);
-        trainerService.deleteTrainer(trainer);
+        try{
+            trainerService.deleteTrainer(trainer);
+        } catch (Exception e){
+            return "trainers/warning";
+        }
         return "redirect:/trainer/all";
     }
 

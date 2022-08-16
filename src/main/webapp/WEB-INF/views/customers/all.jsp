@@ -22,6 +22,7 @@
         <th>L.p.</th>
         <th>Imię</th>
         <th>Nazwisko</th>
+        <th>Nr karnetu</th>
         <th>Rodzaj karnetu</th>
         <th>Data zakupu</th>
         <th>Data ważności</th>
@@ -30,19 +31,21 @@
         <th>Uwagi</th>
         <th>
             <div style="display: flex">
-                <div style="margin: 0 10px"><input type="button" onclick="location.href='/trainer/all';" value="TRENERZY" /></div>
+                <div><input type="button" onclick="location.href='/trainer/all';" value="TRENERZY" /></div>
                 <div><input type="button" onclick="location.href='/bucklet/all';" value="KARNETY" /></div>
+                <div><input type="button" value="OBECNOŚĆ" onclick="window.open('/customer/presence')" /></div>
             </div>
 
         </th>
     </tr>
-    <c:forEach items="${customers}" var="customer" begin="0" end="${size-1}" varStatus="row">
+    <c:forEach items="${customers}" var="customer" begin="0" end="${size}" varStatus="row">
         <c:choose>
         <c:when test="${empty customer.visitsLeft}">
         <tr align="center" bgcolor="red">
             <td>${row.index + 1}</td>
             <td align="left">${customer.name}</td>
             <td align="left">${customer.surname}</td>
+            <td>${customer.cartNumber}</td>
             <td>${customer.bucklet.name}</td>
             <td>${customer.purchaseDate}</td>
             <td>${customer.expiryDate}</td>
@@ -61,6 +64,7 @@
                 <td>${row.index + 1}</td>
                 <td align="left">${customer.name}</td>
                 <td align="left">${customer.surname}</td>
+                <td>${customer.cartNumber}</td>
                 <td>${customer.bucklet.name}</td>
                 <td>${customer.purchaseDate}</td>
                 <td>${customer.expiryDate}</td>

@@ -5,7 +5,9 @@ import org.springframework.stereotype.Repository;
 import pl.lukasbeben.trainer.Trainer;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
+
 
 @Repository
 @Transactional
@@ -13,6 +15,7 @@ import java.util.List;
 public class CustomerService {
 
     private final CustomerDao customerDao;
+    private final CustomerRepository customerRepository;
 
     public List<Customer> showALL(){
         return customerDao.showAll();
@@ -30,6 +33,33 @@ public class CustomerService {
 
     public void deleteCustomer(Customer customer){
         customerDao.delete(customer);
+    }
+
+
+    public void notePresence(String cartNumber){
+        Customer customer = customerRepository.findByCartNumber(cartNumber);
+        LocalDate presentDay = LocalDate.now();
+        customer.setLastVisit(presentDay);
+        if(customer.getExpiryDate().isBefore(presentDay) || customer.getVisitsLeft().equals("1")){
+            customer.setVisitsLeft(null);
+        }
+        if(isNumeric(customer.getVisitsLeft())){
+            int i = Integer.parseInt(customer.getVisitsLeft()) - 1;
+            customer.setVisitsLeft(String.valueOf(i));
+        }
+        editCustomer(customer);
+    }
+
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 
 }

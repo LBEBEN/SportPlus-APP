@@ -4,15 +4,15 @@ import lombok.Data;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.format.annotation.DateTimeFormat;
 import pl.lukasbeben.bucklet.Bucklet;
 import pl.lukasbeben.trainer.Trainer;
+import pl.lukasbeben.validators.CustomerCartNumber;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import java.sql.Date;
 import java.time.LocalDate;
 
 
@@ -20,6 +20,9 @@ import java.time.LocalDate;
 @Table(name = "customers")
 @Data
 public class Customer {
+
+    public Customer (){}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "client_id")
@@ -35,6 +38,7 @@ public class Customer {
 
     @Column(name = "cart_number", unique = true)
     @NotBlank (message = "Nadaj unikalny numer")
+    @CustomerCartNumber
     private String cartNumber;
 
     @Column(name = "cart_deposit")

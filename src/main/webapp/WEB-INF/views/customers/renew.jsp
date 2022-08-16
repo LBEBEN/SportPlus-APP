@@ -16,7 +16,9 @@
 <h3 style="display: flex">Odnów karnet dla <div style="color: white; margin: 0 10px">${name} ${surname}</div></h3>
 
 <form method="post">
-    <input type="number" name="clientId" value="${clientId}" hidden>
+    <label>
+        <input type="number" name="clientId" value="${clientId}" hidden>
+    </label>
     Ustaw typ karnetu :
     <select name="buckletType">
         <c:forEach var="b" items="${bucklets}">
