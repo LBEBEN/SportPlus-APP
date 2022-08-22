@@ -35,6 +35,14 @@ public class CustomerService {
         customerDao.delete(customer);
     }
 
+    public List <Customer> visitCustomer(){
+        LocalDate date = LocalDate.now().minusDays(2);
+        return customerRepository.visitCustmoer(date);
+    }
+
+    public List<Customer> customerBySurname(String surname){
+        return customerRepository.customerBySurname(surname);
+    }
 
     public void notePresence(String cartNumber){
         Customer customer = customerRepository.findByCartNumber(cartNumber);

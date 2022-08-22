@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: ben10
@@ -25,9 +26,14 @@
 <div style="display: flex">
     <div style="margin: 0 10px; font-style: italic"><b style="color: white">Nr karnetu</b><br>${customer.cartNumber}</div>
     <div style="margin: 0 10px; font-style: italic"><b style="color: white">Typ karnetu</b><br>${customer.bucklet.name}</div>
-    <div style="margin: 0 10px; font-style: italic"><b style="color: white">Opłacono depozyt</b><br>${customer.cartDeposit}</div>
+    <div style="margin: 0 10px; font-style: italic"><b style="color: white">Opłacono depozyt</b><br>
+        <c:choose>
+            <c:when test="${customer.cartDeposit == true}"><label>OPŁACONO</label> </c:when>
+            <c:when test="${customer.cartDeposit == false}"><label style="color: red">NIE OPŁACONO</label> </c:when>
+        </c:choose>
+    </div>
 </div>
-<p>
+    <p></p>
 <div style="display: flex">
     <div style="margin: 0 10px; font-style: italic"><b style="color: white">Data zakupu</b><br>${customer.purchaseDate}</div>
     <div style="margin: 0 10px; font-style: italic"><b style="color: white">Ważny do</b><br>${customer.expiryDate}</div>

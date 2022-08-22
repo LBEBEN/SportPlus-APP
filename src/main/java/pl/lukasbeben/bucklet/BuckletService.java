@@ -2,7 +2,7 @@ package pl.lukasbeben.bucklet;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.lukasbeben.trainer.Trainer;
+import pl.lukasbeben.customer.Customer;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -30,4 +30,13 @@ public class BuckletService {
     public void deleteBucklet (Bucklet bucklet) {buckletDao.delete(bucklet);
     }
 
+    // ustawienie ilości wejść i daty ważności klienta, wykorzystywane w editClient oraz addCustomer w CustomerController
+    public void setVisitsAndExpiryDate(Customer customer) {
+        List<Bucklet> bucklets = showAll();
+        for (Bucklet b : bucklets) {
+            if (b.getBuckletId() == customer.getBucklet().getBuckletId()) {
+                customer.setVisitsLeft(b.getNumberOfVisits());
+                customer.setExpiryDate(customer.getPurchaseDate().plusDays(customer.getBucklet().getValidity()));
+            }}
+    }
 }

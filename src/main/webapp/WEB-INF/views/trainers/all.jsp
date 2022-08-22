@@ -28,7 +28,7 @@
         <th>Opis</th>
     </tr>
 
-        <c:forEach items="${trainers}" var="trainer" begin="0" end="${size-1}" varStatus="row">
+        <c:forEach items="${trainers}" var="trainer" begin="0" end="${size}" varStatus="row">
             <tr align="center">
                 <td>${row.index + 1}</td>
                 <td align="left">${trainer.name}</td>

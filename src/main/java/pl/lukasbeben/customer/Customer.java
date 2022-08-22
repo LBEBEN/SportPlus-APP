@@ -21,8 +21,6 @@ import java.time.LocalDate;
 @Data
 public class Customer {
 
-    public Customer (){}
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "client_id")

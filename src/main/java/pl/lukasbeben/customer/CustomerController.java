@@ -2,6 +2,8 @@ package pl.lukasbeben.customer;
 
 import jdk.dynalink.linker.LinkerServices;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Scope;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
@@ -12,6 +14,9 @@ import pl.lukasbeben.bucklet.BuckletService;
 import pl.lukasbeben.trainer.Trainer;
 import pl.lukasbeben.trainer.TrainerService;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -32,6 +37,24 @@ public class CustomerController {
         model.addAttribute("customers", customerService.showALL());
         model.addAttribute("bucklets", buckletService.showAll());
         model.addAttribute("size", size);
+        return "customers/all";
+    }
+
+    @PostMapping(value = "/all")
+    public String showCustomerBySurname(HttpServletRequest request, Model model){
+        int size = customerService.customerBySurname(request.getParameter("surname")).size();
+        model.addAttribute("customers", customerService.customerBySurname(request.getParameter("surname")));
+        model.addAttribute("bucklets", buckletService.showAll());
+        model.addAttribute("size", size);
+        return "customers/all";
+    }
+
+    @GetMapping("/lastVisit")
+    public String showLastVisit(Model model){
+        int size = customerService.visitCustomer().size();
+        model.addAttribute("size", size);
+        model.addAttribute("bucklets", buckletService.showAll());
+        model.addAttribute("customers", customerService.visitCustomer());
         return "customers/all";
     }
 
@@ -63,13 +86,7 @@ public class CustomerController {
         if(result.hasErrors()){
             return "customers/add";
         }
-        List<Bucklet> bucklets = buckletService.showAll();
-        for (Bucklet b : bucklets){
-            if (b.getBuckletId()== customer.getBucklet().getBuckletId()){
-                customer.setVisitsLeft(b.getNumberOfVisits());
-                customer.setExpiryDate(customer.getPurchaseDate().plusDays(customer.getBucklet().getValidity()));
-            }
-        }
+        buckletService.setVisitsAndExpiryDate(customer);
         customerService.addCustomer(customer);
         return "redirect:/customer/all";
     }
@@ -82,17 +99,12 @@ public class CustomerController {
 
     @PostMapping("/edit/{clientId}")
     public String editClient(Customer customer) {
-        List<Bucklet> bucklets = buckletService.showAll();
-        for (Bucklet b : bucklets) {
-            if (b.getBuckletId() == customer.getBucklet().getBuckletId()) {
-                customer.setVisitsLeft(b.getNumberOfVisits());
-                customer.setExpiryDate(customer.getPurchaseDate().plusDays(customer.getBucklet().getValidity()));
-            }}
-            customerService.editCustomer(customer);
+        buckletService.setVisitsAndExpiryDate(customer);
+        customerService.editCustomer(customer);
             return "redirect:/customer/all";
     }
 
-//     odnawianie karnetu
+    //     odnawianie karnetu
     @GetMapping ("/renew/{clientId}")
     public String renewBucklet(@PathVariable int clientId, Model model){
         Customer customer = customerService.findById(clientId);
@@ -124,18 +136,33 @@ public class CustomerController {
     }
 
     @GetMapping("/presence")
-    public String notePresence(){
+    public String notePresence(HttpServletRequest request, HttpServletResponse response, Model model){
+        List <Cookie> cookiesList = List.of(request.getCookies());
+        String info = null;
+        for(Cookie c : cookiesList){
+            if(c.getName().equals("info")){
+                info = c.getValue();
+                c.setMaxAge(0);
+                response.addCookie(c);
+            }
+        }
+        if(info != null){
+        model.addAttribute("info", info);
+        }
         return "customers/presence";
     }
 
     @PostMapping("/presence")
-    public String notePresence(@RequestParam String cartNumber, Model model ) {
+    public String notePresence(@RequestParam String cartNumber, HttpServletResponse response) {
         try {
             customerService.notePresence(cartNumber);
-            model.addAttribute("info", "Odnotowano wejście");
+            Cookie c = new Cookie("info", "1");
+            c.setPath("http://localhost:8080/customer/presence");
+            response.addCookie(c);
         } catch (NullPointerException e){
-
-            model.addAttribute("info", "Nie ma takiego numru w bazie");
+            Cookie c = new Cookie("info", "0");
+            c.setPath("http://localhost:8080/customer/presence");
+            response.addCookie(c);
         }
         return "redirect: /customer/presence";
     }
@@ -146,4 +173,5 @@ public class CustomerController {
         customerService.deleteCustomer(customer);
         return "redirect:/customer/all";
     }
+
 }

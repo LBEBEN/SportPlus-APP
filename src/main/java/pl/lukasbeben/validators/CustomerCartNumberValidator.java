@@ -10,7 +10,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.List;
 
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class CustomerCartNumberValidator implements ConstraintValidator<CustomerCartNumber, String> {
 
     @Autowired
@@ -18,9 +18,9 @@ public class CustomerCartNumberValidator implements ConstraintValidator<Customer
 
 //    public CustomerCartNumberValidator(){}
 
-    public CustomerCartNumberValidator (CustomerService customerService){
-        this.customerService = customerService;
-    }
+//    public CustomerCartNumberValidator (CustomerService customerService){
+//        this.customerService = customerService;
+//    }
 
     @Override
     public void initialize(CustomerCartNumber constraintAnnotation) {
