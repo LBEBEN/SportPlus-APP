@@ -2,6 +2,8 @@ package pl.lukasbeben.trainer;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.lukasbeben.customer.Customer;
+import pl.lukasbeben.customer.CustomerRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;

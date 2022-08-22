@@ -44,6 +44,10 @@ public class CustomerService {
         return customerRepository.customerBySurname(surname);
     }
 
+    public List <Customer> trainersCustomers(int trainersId){
+        return customerRepository.coachesClients(trainersId);
+    }
+
     public void notePresence(String cartNumber){
         Customer customer = customerRepository.findByCartNumber(cartNumber);
         LocalDate presentDay = LocalDate.now();

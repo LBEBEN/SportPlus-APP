@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.WebUtils;
+import pl.lukasbeben.customer.CustomerRepository;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,9 +24,10 @@ import java.util.List;
 public class TrainerController {
 
     private final TrainerService trainerService;
+    private final CustomerRepository customerRepository;
 
     @RequestMapping ("/all")
-    public String showAllTrainers(Model model, HttpServletResponse response){
+    public String showAllTrainers(Model model){
         int size = trainerService.findAll().size();
         model.addAttribute("trainers", trainerService.findAll());
         model.addAttribute("size", size);
@@ -66,6 +68,15 @@ public class TrainerController {
     public String editTrainer(Trainer trainer){
         trainerService.editTrainer(trainer);
         return "redirect:/trainer/all";
+    }
+
+    @GetMapping("/client/{trainerId}")
+    public String showAllTrainerClients(@PathVariable int trainerId, Model model){
+        int size = customerRepository.coachesClients(trainerId).size();
+        model.addAttribute("trainer", trainerService.findById(trainerId).getDisplayName());
+        model.addAttribute("customers", customerRepository.coachesClients(trainerId));
+        model.addAttribute("size", size);
+        return "customers/all";
     }
 
     @GetMapping("/delete/{trainerId}")
